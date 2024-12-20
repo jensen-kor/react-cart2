@@ -1,8 +1,8 @@
-function Footer() {
+function CartFooter() {
   return (
     <footer>
       <p>&copy; Himedia Academy</p>
     </footer>
   );
 }
-export default Footer;
+export default CartFooter;
