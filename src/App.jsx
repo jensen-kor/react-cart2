@@ -7,8 +7,8 @@ import BoughtList from "./components/BoughtList";
 import CartFooter from "./components/CartFooter";
 
 function App() {
-  // 서버로부터 API 호출해서 쇼핑 목록 받아오기
-  const apiUrl = "http://localhost:1337/shoplist"; // json
+  const apiUrl = "http://localhost:3000/shoplist";
+  //  서버로부터 API 호출해서 쇼핑 목록 받아오기
   // const [itemList, setItemList] = useState([
   //   { id: 1, name: "무", isBought: false },
   //   { id: 2, name: "배추", isBought: false },
@@ -16,20 +16,20 @@ function App() {
   //   { id: 4, name: "고춧가루", isBought: false },
   // ]);
   const [itemList, setItemList] = useState([]);
-
   //  산 물건 보기 여부를 체크할 state
   const [showBoughtItems, setShowBoughtItems] = useState(true);
-  // 페이지 로딩 상태 체크할 state
+  //  페이지 로딩 상태 체크 state
   const [isLoading, setIsLoading] = useState(true);
-  // 에러 메세지 출력을 위한 state
+  //  에러 메시지 출력을 위한 state
   const [error, setError] = useState(null);
+
   //  isBought === false인 것만 필터링
   //  isBought === false인 것들
   const shopItems = itemList.filter((item) => !item.isBought);
   //  isBought === true인 것들의 목록
   const boughtItems = itemList.filter((item) => item.isBought);
 
-  // API에서 목록 받아오는 함수
+  //  API에서 목록 받아오는 함수
   const fetchItems = async () => {
     try {
       const response = await fetch(apiUrl);
@@ -37,20 +37,22 @@ function App() {
         throw new Error("데이터를 받아오지 못했습니다.");
       }
       const data = await response.json();
-      console.log(data);
+      // console.log(data);
       setItemList(data);
-      setIsLoading(false); // 로딩이 끝났음을 알림
+      setIsLoading(false); //  로딩이 끝났음을 알림
     } catch (err) {
       // console.error(err);
       setError(err.message);
-      setIsLoading(false); // 로딩이 끝남
+      setIsLoading(false); //  로딩이 끝남
     }
   };
   useEffect(() => {
     fetchItems();
-  }, []); // ->컴포넌트가 처음 로딩되었을 떄의 이펙트 발생
+  }, []); //  -> 컴포넌트가 처음 로딩되었을 때의 이펙트 발생
+
   if (isLoading) return <div>로딩 중...</div>;
   if (error) return <div>에러: {error}</div>;
+
   //  새 아이템 추가
   const addNewItem = async (name) => {
     //  id 생성 -> id의 최댓값 + 1
@@ -63,9 +65,9 @@ function App() {
     //  name: name => name
     const newItem = { id: newId, name, isBought: false };
     //  itemList에 새 아이템 추가
-    // const newItemList = [...itemList, newItem];
-    // setItemList(newItemList);
-    // -> REST 서버에 POST 호출 -> CREATE
+    // const newItemList = [...itemL
+
+    //  -> REST 서버에 POST 호출 -> CREATE
     try {
       const response = await fetch(apiUrl, {
         method: "POST",
@@ -74,11 +76,11 @@ function App() {
         },
         body: JSON.stringify(newItem),
       });
-      //요청 결과 확인
+      //  요청 결과 확인
       if (!response.ok) {
         throw new Error("새 아이템을 추가하지 못했습니다.");
       }
-      // 리스트 갱신
+      //  리스트 갱신
       fetchItems();
     } catch (err) {
       setError(err.message);
